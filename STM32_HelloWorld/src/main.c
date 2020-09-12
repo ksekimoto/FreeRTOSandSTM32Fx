@@ -50,6 +50,8 @@ int main(void)
 	printf("This is hello world example program.\n");
 #endif
 
+	DWT->CTRL |= (1 << 0);	// Enable CYCCNT in DWT_CTRL
+
 	// 1. Reset RCC clock configuration to default reset state
 	// HCI ON, PLL OFF, system clock = 16MHz, cpu clock = 16MHz
 	RCC_DeInit();
@@ -61,6 +63,10 @@ int main(void)
 
 	sprintf(usr_msg, "This is hello world application starting\n");
 	printmsg(usr_msg);
+
+	// Start Recording
+	SEGGER_SYSVIEW_Conf();
+	SEGGER_SYSVIEW_Start();
 
 	// 3. let's create two tasks
 	xTaskCreate(vTask1_handler, "Task-1", configMINIMAL_STACK_SIZE, NULL, 2, &xTaskHandle1);
